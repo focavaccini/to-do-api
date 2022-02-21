@@ -1,5 +1,6 @@
 package com.todoapi.entities;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -7,23 +8,31 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.todoapi.entities.enums.PriorityTask;
+import com.todoapi.entities.enums.StatusTask;
+
 @Entity
-public class Task {
+public class Task implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
+	private Integer priority;
+	private Integer status;
 	
 	public Task() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Task(Long id, String name) {
+	public Task(Long id, String name, PriorityTask priorityTask, StatusTask statusTask) {
 		super();
 		this.id = id;
 		this.name = name;
-
+		this.priority = (priorityTask == null) ? null : priorityTask.getCode();
+		this.status = (statusTask == null) ? null : statusTask.getCode();
 	}
 
 	public Long getId() {
@@ -42,6 +51,22 @@ public class Task {
 		this.name = name;
 	}
 	
+	public Integer getPriority() {
+		return priority;
+	}
+
+	public void setPriority(Integer priority) {
+		this.priority = priority;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
