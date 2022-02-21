@@ -1,6 +1,8 @@
 package com.todoapi.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -8,7 +10,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class User implements Serializable{
@@ -23,6 +27,10 @@ public class User implements Serializable{
 	@Column(unique = true)
 	private String email;
 	private String password;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "user")
+	private List<Task> tasks = new ArrayList<>();
 	
 	public User() {
 		// TODO Auto-generated constructor stub
@@ -66,6 +74,14 @@ public class User implements Serializable{
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public List<Task> getTasks() {
+		return tasks;
+	}
+
+	public void setTasks(List<Task> tasks) {
+		this.tasks = tasks;
 	}
 
 	@Override

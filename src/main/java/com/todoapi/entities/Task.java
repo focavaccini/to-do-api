@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import com.todoapi.entities.enums.PriorityTask;
 import com.todoapi.entities.enums.StatusTask;
@@ -23,16 +25,21 @@ public class Task implements Serializable{
 	private Integer priority;
 	private Integer status;
 	
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
+	
 	public Task() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Task(Long id, String name, PriorityTask priorityTask, StatusTask statusTask) {
+	public Task(Long id, String name, PriorityTask priorityTask, StatusTask statusTask, User user) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.priority = (priorityTask == null) ? null : priorityTask.getCode();
 		this.status = (statusTask == null) ? null : statusTask.getCode();
+		this.user = user;
 	}
 
 	public Long getId() {
@@ -65,6 +72,14 @@ public class Task implements Serializable{
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override
