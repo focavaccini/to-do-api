@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.todoapi.entities.User;
@@ -14,6 +15,9 @@ import com.todoapi.repositories.UserRepository;
 public class UserService {
 	@Autowired
 	private UserRepository repository;
+	
+	@Autowired
+	private BCryptPasswordEncoder bCrypt;
 	
 	public List<User> findAll(){
 		return repository.findAll();
@@ -26,6 +30,7 @@ public class UserService {
 	
 	public User insert(User obj) {
 		obj.setId(null);
+		obj.setPassword(bCrypt.encode(obj.getPassword()));
 		obj = repository.save(obj);
 		return obj;
 	}

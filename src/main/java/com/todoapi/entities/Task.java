@@ -33,13 +33,13 @@ public class Task implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	public Task(Long id, String name, PriorityTask priorityTask, StatusTask statusTask, User user) {
+	public Task(Long id, String name, PriorityTask priorityTask, StatusTask statusTask) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.priority = (priorityTask == null) ? null : priorityTask.getCode();
 		this.status = (statusTask == null) ? null : statusTask.getCode();
-		this.user = user;
+		this.user = null;
 	}
 
 	public Long getId() {
