@@ -58,20 +58,21 @@ public class Task implements Serializable{
 		this.name = name;
 	}
 	
-	public Integer getPriority() {
-		return priority;
+	public PriorityTask getPriority() {
+		return PriorityTask.toEnum(priority);
 	}
 
-	public void setPriority(Integer priority) {
-		this.priority = priority;
+	public void setPriority(PriorityTask priorityTask) {
+		this.priority = priorityTask.getCode();
 	}
 
-	public Integer getStatus() {
-		return status;
+	
+	public StatusTask getStatus() {
+		return StatusTask.toEnum(status);
 	}
 
-	public void setStatus(Integer status) {
-		this.status = status;
+	public void setStatus(StatusTask statusTask) {
+		this.status =  statusTask.getCode();
 	}
 
 	public User getUser() {
