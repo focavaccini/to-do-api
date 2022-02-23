@@ -101,7 +101,8 @@ public class TaskService {
 		
 		return repository.findByUser(user, pageRequest);
 	}
-
+	
+	
 	public Boolean validateResponsibleForTheTask(String email) {
 		if(email.equals(jwtUtil.getUsername(JWTAuthenticationFilter.token))) {
 			return true;
