@@ -37,11 +37,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	private JWTUtil jwtUtil;
 	
 	public static final String[] PUBLIC_MATCHERS = {
-			"/h2-console/**"
+			"/h2-console/**",
+			"/swagger-ui/**"
 	};
 	
 	public static final String[] PUBLIC_MATCHERS_GET = {
-			"/tasks/**"
+			"/tasks/**",
+			"/v3/api-docs/**",
+			"/swagger-ui/**"
 	};
 	
 	public static final String[] PUBLIC_MATCHERS_POST = {

@@ -20,19 +20,25 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.todoapi.entities.Task;
 import com.todoapi.services.TaskService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/tasks")
+@Tag(name = "Tasks endpoints")
 public class TaskResource {
 	
 	@Autowired
 	private TaskService service;
 	
-	
+	@Operation(summary = "Find all tasks")
 	@GetMapping
 	public ResponseEntity<List<Task>> findAll(){
 		List<Task> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
+	
+	@Operation(summary = "Find a specific task by your ID")
 	@GetMapping(value="/{id}")
 	public ResponseEntity<Task> find(@PathVariable Long id) {
 		Task obj = service.findById(id);
@@ -40,6 +46,7 @@ public class TaskResource {
 		return ResponseEntity.ok().body(obj);
 	}
 	
+	@Operation(summary = "Insert new task")
 	@PostMapping
 	public ResponseEntity<Void> insert(@RequestBody Task task) {
 		Task obj = service.insert(task);
@@ -47,6 +54,7 @@ public class TaskResource {
 		return ResponseEntity.created(uri).build(); 
 	}
 	
+	@Operation(summary = "Update task by your ID")
 	@PutMapping(value="/{id}")
 	public ResponseEntity<Void> update(@RequestBody Task task, @PathVariable Long id){
 		task.setId(id);
@@ -54,6 +62,7 @@ public class TaskResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@Operation(summary = "Mark task by your ID")
 	@PutMapping(value="/markTask/{id}")
 	public ResponseEntity<Void> markTask(@RequestBody Task task, @PathVariable Long id){
 		task.setId(id);
@@ -61,6 +70,7 @@ public class TaskResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@Operation(summary = "Delete task by your ID")
 	@DeleteMapping(value="/{id}")
  	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		Task task = service.findById(id);
@@ -68,6 +78,7 @@ public class TaskResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@Operation(summary = "Paging all tasks")
 	@GetMapping(value = "/page")
 	public ResponseEntity<Page<Task>> listTasks(
 			@RequestParam(value = "page",defaultValue = "0") Integer pages, 
@@ -77,4 +88,5 @@ public class TaskResource {
 		Page<Task> list  = service.listTasks(pages, linesPerPage, orderBy, direction);
 		return ResponseEntity.ok().body(list);
 	}
+
 }

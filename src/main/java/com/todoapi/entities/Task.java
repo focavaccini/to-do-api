@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.todoapi.entities.enums.PriorityTask;
 import com.todoapi.entities.enums.StatusTask;
 
@@ -24,7 +25,9 @@ public class Task implements Serializable{
 	private String name;
 	private Integer priority;
 	private Integer status;
+	private String tokenUser;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
@@ -40,6 +43,7 @@ public class Task implements Serializable{
 		this.priority = (priorityTask == null) ? null : priorityTask.getCode();
 		this.status = (statusTask == null) ? null : statusTask.getCode();
 		this.user = null;
+		this.tokenUser = "";
 	}
 
 	public Long getId() {
@@ -81,6 +85,14 @@ public class Task implements Serializable{
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public String getTokenUser() {
+		return tokenUser;
+	}
+
+	public void setTokenUser(String tokenUser) {
+		this.tokenUser = tokenUser;
 	}
 
 	@Override

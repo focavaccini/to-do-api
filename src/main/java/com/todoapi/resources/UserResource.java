@@ -19,19 +19,25 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.todoapi.entities.User;
 import com.todoapi.services.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/users")
+@Tag(name = "Users endpoints")
 public class UserResource {
 	
 	@Autowired
 	private UserService service;
 	
-	
+	@Operation(summary = "Find all users")
 	@GetMapping
 	public ResponseEntity<List<User>> findAll(){
 		List<User> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
+	
+	@Operation(summary = "Find a specific user by your ID")
 	@GetMapping(value="/{id}")
 	public ResponseEntity<User> find(@PathVariable Long id) {
 		User obj = service.findById(id);
@@ -39,12 +45,14 @@ public class UserResource {
 		return ResponseEntity.ok().body(obj);
 	}
 	
+	@Operation(summary = "Find a specific user by your email")
 	@GetMapping(value="/search")
 	public ResponseEntity<User> findByEmail(@RequestParam String email) {
 		User obj = service.findByEmail(email);
 		return ResponseEntity.ok().body(obj);
 	}
 	
+	@Operation(summary = "Insert new user")
 	@PostMapping
 	public ResponseEntity<Void> insert(@RequestBody User user) {
 		User obj = service.insert(user);
@@ -52,6 +60,7 @@ public class UserResource {
 		return ResponseEntity.created(uri).build(); 
 	}
 	
+	@Operation(summary = "Update user by your ID")
 	@PutMapping(value="/{id}")
 	public ResponseEntity<Void> update(@RequestBody User user, @PathVariable Long id){
 		user.setId(id);
@@ -59,6 +68,7 @@ public class UserResource {
 		return ResponseEntity.noContent().build();
 	}
 	
+	@Operation(summary = "Delete users by your ID")
 	@DeleteMapping(value="/{id}")
  	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);

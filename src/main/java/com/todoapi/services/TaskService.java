@@ -44,6 +44,7 @@ public class TaskService {
 	
 	public Task insert(Task obj) {
 		obj.setId(null);
+		obj.setTokenUser(JWTAuthenticationFilter.token);
 		obj.setUser(userService.findByEmail(jwtUtil.getUsername(JWTAuthenticationFilter.token)));
 		obj = repository.save(obj);
 		return obj;
@@ -92,12 +93,11 @@ public class TaskService {
 		}
 		
 		User user = userRepository.findById(userSS.getId()).get();
-		
 		PageRequest pageRequest = PageRequest.of(pages, linesPerPage, Direction.valueOf(direction), orderBy);
 		
 		return repository.findByUser(user, pageRequest);
 	}
-	
+
 	public Boolean validateResponsibleForTheTask(String email) {
 		if(email.equals(jwtUtil.getUsername(JWTAuthenticationFilter.token))) {
 			return true;
