@@ -5,11 +5,13 @@ import java.util.Optional;
 
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.todoapi.entities.User;
 import com.todoapi.repositories.UserRepository;
+import com.todoapi.services.exceptions.DataIntegrityException;
 
 @Service
 public class UserService {
@@ -43,7 +45,13 @@ public class UserService {
 	}
 
 	public void delete(long id) {
-		repository.deleteById(id);
+		findById(id);
+		try {
+			repository.deleteById(id);
+		}
+		catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Cannot delete because there are related tasks");
+		}
 	}
 	
 	public User findByEmail(String email) {

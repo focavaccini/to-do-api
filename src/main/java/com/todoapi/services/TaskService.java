@@ -18,6 +18,7 @@ import com.todoapi.security.JWTAuthenticationFilter;
 import com.todoapi.security.JWTUtil;
 import com.todoapi.security.UserSS;
 import com.todoapi.services.authentication.UserServiceAuthentication;
+import com.todoapi.services.exceptions.AuthorizationException;
 
 @Service
 public class TaskService {
@@ -51,8 +52,9 @@ public class TaskService {
 	}
 	
 	public Task update(Task obj) {
-		if(validateResponsibleForTheTask(jwtUtil.getUsername(JWTAuthenticationFilter.token)) == null) {
-			throw new RuntimeException("Could not execute command, unauthorized user");
+		String email = obj.getUser().getEmail();
+		if(validateResponsibleForTheTask(email) == false) {
+			throw new AuthorizationException("Access denied");
 		}
 			Task newObj = findById(obj.getId());
 			updateData(newObj, obj);
@@ -61,8 +63,9 @@ public class TaskService {
 	}
 
 	public void delete(long id, Task task) {
-		if(validateResponsibleForTheTask(jwtUtil.getUsername(JWTAuthenticationFilter.token)) == null) {
-			throw new RuntimeException("Could not execute command, unauthorized user");
+		String email = task.getUser().getEmail();
+		if(validateResponsibleForTheTask(email) == false) {
+			throw new AuthorizationException("Access denied");
 		}
 		repository.deleteById(id);
 	}
@@ -74,8 +77,9 @@ public class TaskService {
 	}
 
 	public Task updateTaskFinish(Task obj) {
-		if(validateResponsibleForTheTask(jwtUtil.getUsername(JWTAuthenticationFilter.token)) == null) {
-			throw new RuntimeException("Could not execute command, unauthorized user");
+		String email = obj.getUser().getEmail();
+		if(validateResponsibleForTheTask(email) == false) {
+			throw new AuthorizationException("Access denied");
 		}
 			Task newObj = findById(obj.getId());
 			updateTaskState(newObj, obj);
@@ -89,7 +93,7 @@ public class TaskService {
 	public Page<Task> listTasks(Integer pages, Integer linesPerPage, String orderBy, String direction){
 		UserSS userSS = UserServiceAuthentication.authenticated();
 		if(userSS == null) {
-			throw new RuntimeException("unauthorized user");
+			throw new AuthorizationException("Access denied");
 		}
 		
 		User user = userRepository.findById(userSS.getId()).get();
@@ -102,6 +106,6 @@ public class TaskService {
 		if(email.equals(jwtUtil.getUsername(JWTAuthenticationFilter.token))) {
 			return true;
 		}
-		return null;
+		return false;
 	}
 }
