@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -87,6 +88,13 @@ public class TaskResource {
 			@RequestParam(value = "direction",defaultValue = "ASC")String direction){
 		Page<Task> list  = service.listTasks(pages, linesPerPage, orderBy, direction);
 		return ResponseEntity.ok().body(list);
+	}
+	
+	@Operation(summary = "Find all pending tasks by user")
+	@GetMapping(value = "/list/{status}")
+	public ResponseEntity<List<Task>> filter(@Param("status") Integer status){
+		List<Task> listaList = service.filter(status);
+		return ResponseEntity.ok().body(listaList);
 	}
 
 }

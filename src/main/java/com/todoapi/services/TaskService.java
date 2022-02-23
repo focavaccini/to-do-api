@@ -48,7 +48,7 @@ public class TaskService {
 		obj.setTokenUser(JWTAuthenticationFilter.token);
 		obj.setUser(userService.findByEmail(jwtUtil.getUsername(JWTAuthenticationFilter.token)));
 		obj = repository.save(obj);
-		return obj;
+ 		return obj;
 	}
 	
 	public Task update(Task obj) {
@@ -100,6 +100,11 @@ public class TaskService {
 		PageRequest pageRequest = PageRequest.of(pages, linesPerPage, Direction.valueOf(direction), orderBy);
 		
 		return repository.findByUser(user, pageRequest);
+	}
+	
+	public List<Task> filter(Integer status){
+		String userToken = JWTAuthenticationFilter.token;
+		return repository.filterByStatus(status, userToken);
 	}
 	
 	
