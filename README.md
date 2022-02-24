@@ -89,5 +89,5 @@ Enviando para o Heroku
 34 passo: no git bash digite:
 	git add . 
 	git commit -m "Deploy" 
-	git push heroku master
+	git push heroku develop:main
 35 passo: Vá na sua conta Heroku no app e clique em open app no canto direito superior, e te mandará para um enderço quer será a partir dele que faremos as requisições via postman
